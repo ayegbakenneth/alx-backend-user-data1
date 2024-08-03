@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ File executable path """
-
+import os
+import mysql.connector
 import logging
 import re
 """ Module importation path """
@@ -50,3 +51,35 @@ def get_logger() -> logging.Logger:
 
     logger.addHandler(stream_handler)
     return logger
+
+
+def get_db():
+    """Retrieve database credentials from environment variables"""
+    db_username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    db_password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    db_host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
+
+    driver = mysql.connector.connect(
+        user=db_username,
+        password=db_password,
+        host=db_host,
+        database=db_name
+    )
+
+    return driver
+
+
+def main():
+    """ function that takes no arguments and returns nothing. """
+    connector_db = get_db()
+    cursor = connector_db.cursor()
+    ken = cursor.execute("SELECT * FROM users")
+    
+    for row in ken:
+        result = ken[row].filter_datum()
+    return result
+
+
+if __name__ == ('__main__'):
+    main()
