@@ -6,7 +6,8 @@ import bcrypt
 
 
 def hash_password(password):
-    """ A function that returns a hashed password """
+    """ A function that returns
+    a hashed password """
     pass_word = password.encode('utf-8')
     salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pass_word, bcrypt.gensalt())
+    return bcrypt.hashpw(pass_word, salt)
