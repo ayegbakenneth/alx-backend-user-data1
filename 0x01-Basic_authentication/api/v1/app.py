@@ -12,15 +12,15 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-auth = None
+basic_auth = None
 if ken_env_var == "RIGHT_AUTH_TYPE":
-    auth = RightAuthType()
+    basic_auth = RightAuthType()
 elif not_ken_env_var == "DIFFERENT_AUTH_TYPE":
-    auth = DifferentAuthType
+    basic_auth = DifferentAuthType
 
-if auth:
-    from api.v1.auth.auth import Auth
-auth_instance = Auth()
+if BasicAuth:
+    from api.v1.auth.basic_auth import BasicAuth
+auth_instance = BasicAuth()
 auth = auth_instance
 
 
