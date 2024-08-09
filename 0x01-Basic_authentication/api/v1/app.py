@@ -16,11 +16,12 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
-if os.getenv('AUTH_TYPE') == 'basic_auth':
-    from api.v1.auth.basic_auth import BasicAuth
-    auth = BasicAuth()
-else:
+auth_type = getenv('AUTH_TYPE', 'auth')
+if auth_type == 'auth':
     auth = Auth()
+if auth_type == 'basic_type':
+    auth = BasicAuth()
+
 
 
 @app.before_request
@@ -28,7 +29,6 @@ def before_request():
     """ A method to handle the before_request """
     if auth is None:
         return
-
 
     not_included = [
         '/api/v1/status/', '/api/v1/unauthorized/',
